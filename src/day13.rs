@@ -13,12 +13,12 @@ impl Solution for Day13 {
         input_lines.to_string()
     }
 
-    fn part_one(_input: &Self::ParsedInput) -> String {
+    fn part_one(_input: &mut Self::ParsedInput) -> String {
         // TODO: implement part one
         0.to_string()
     }
 
-    fn part_two(_input: &Self::ParsedInput) -> String {
+    fn part_two(_input: &mut Self::ParsedInput) -> String {
         // TODO: implement part two
         0.to_string()
     }

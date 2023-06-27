@@ -24,11 +24,11 @@ impl Solution for Day00 {
         input_lines.to_string()
     }
 
-    fn part_one(input: &Self::ParsedInput) -> String {
+    fn part_one(input: &mut Self::ParsedInput) -> String {
         format!("{}", input.lines().map(sum_numbers_in_line).sum::<i32>())
     }
 
-    fn part_two(input: &Self::ParsedInput) -> String {
+    fn part_two(input: &mut Self::ParsedInput) -> String {
         format!(
             "{}",
             input.lines().map(square_difference_in_line).sum::<i32>()

@@ -13,14 +13,28 @@ impl Solution for Day02 {
         input_lines.to_string()
     }
 
-    fn part_one(_input: &Self::ParsedInput) -> String {
-        // TODO: implement part one
-        0.to_string()
+    fn part_one(input: &mut Self::ParsedInput) -> String {
+        input.lines().map(score_round).sum::<u32>().to_string()
     }
 
-    fn part_two(_input: &Self::ParsedInput) -> String {
+    fn part_two(_input: &mut Self::ParsedInput) -> String {
         // TODO: implement part two
         0.to_string()
+    }
+}
+
+fn score_round(round: &str) -> u32 {
+    match round {
+        "A X" => 4, // 1 + 3
+        "B X" => 1, // 1 + 0
+        "C X" => 7, // 1 + 6
+        "A Y" => 8, // 2 + 6
+        "B Y" => 5, // 2 + 3
+        "C Y" => 2, // 2 + 0
+        "A Z" => 3, // 3 + 0
+        "B Z" => 9, // 3 + 6
+        "C Z" => 6, // 3 + 3
+        _ => 0,
     }
 }
 
@@ -30,7 +44,10 @@ mod tests {
 
     #[test]
     fn check_day02_part1_case1() {
-        assert_eq!(Day02::solve_part_one(""), "0".to_string())
+        let input = r"A Y
+B X
+C Z";
+        assert_eq!(Day02::solve_part_one(input), "15".to_string())
     }
 
     #[test]
@@ -40,6 +57,12 @@ mod tests {
 
     #[test]
     fn check_day02_both_case1() {
-        assert_eq!(Day02::solve("", false), ("0".to_string(), "0".to_string()))
+        let input = r"A Y
+B X
+C Z";
+        assert_eq!(
+            Day02::solve(input, false),
+            ("15".to_string(), "0".to_string())
+        )
     }
 }

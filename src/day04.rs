@@ -1,24 +1,65 @@
+use regex::Regex;
+
 use crate::Solution;
 
 #[derive(Clone, Debug)]
 pub struct Day04;
 
+pub struct Elf {
+    upper: u32,
+    lower: u32,
+}
+pub struct Pair {
+    a: Elf,
+    b: Elf,
+}
+
+impl Pair {
+    fn range_contains_range(&self) -> bool {
+        (self.a.upper <= self.b.upper && self.a.lower >= self.b.lower)
+            || (self.b.upper <= self.a.upper && self.b.lower >= self.a.lower)
+    }
+}
+
 impl Solution for Day04 {
-    type ParsedInput = String;
+    type ParsedInput = Vec<Pair>;
 
     fn parse_input(input_lines: &str) -> Self::ParsedInput {
-        // You can leave this as-is if you want to handle the input differently for each part.
-        // Alternatively, you can parse the input into two completely separate structs and pass
-        // them through together in a tuple.
-        input_lines.to_string()
+        let mut input = vec![];
+        for line in input_lines.lines() {
+            let re = Regex::new(r"(\d+)-(\d+),(\d+)-(\d+)").unwrap();
+            let caps = re
+                .captures(line)
+                .unwrap()
+                .iter()
+                .skip(1)
+                .map(|hit| hit.unwrap().as_str().parse::<u32>().unwrap())
+                .collect::<Vec<_>>();
+            let elf_a = Elf {
+                lower: caps[0],
+                upper: caps[1],
+            };
+            let elf_b = Elf {
+                lower: caps[2],
+                upper: caps[3],
+            };
+            let pair = Pair { a: elf_a, b: elf_b };
+            input.push(pair);
+        }
+        input
     }
 
-    fn part_one(_input: &Self::ParsedInput) -> String {
-        // TODO: implement part one
-        0.to_string()
+    fn part_one(input: &mut Self::ParsedInput) -> String {
+        let mut count = 0;
+        for pair in input {
+            if pair.range_contains_range() {
+                count += 1;
+            }
+        }
+        count.to_string()
     }
 
-    fn part_two(_input: &Self::ParsedInput) -> String {
+    fn part_two(_input: &mut Self::ParsedInput) -> String {
         // TODO: implement part two
         0.to_string()
     }
