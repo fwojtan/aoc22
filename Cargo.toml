@@ -13,6 +13,7 @@ regex = "1.5.4"
 clap = { version = "4.2.5", features = ["cargo", "derive"] }
 iai = { version = "0.1.1", features = ["iai_macro", "macro"] }
 petgraph = "0.6.4"
+nalgebra = "0.32.3"
 
 [[bench]]
 name = "day00"
