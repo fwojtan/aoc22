@@ -34,12 +34,33 @@ impl CrateStacks {
             self._single_move(instruction.orig, instruction.dest);
         }
     }
+
+    fn move_crates_together(&mut self, instruction: &CrateMove) {
+        let mut moved_crates = vec![];
+        let from_stack = self.stacks.get_mut(&instruction.orig).unwrap();
+        for _ in 0..instruction.quantity {
+            if let Some(value) = from_stack.pop() {
+                moved_crates.push(value);
+            }
+        }
+        let to_stack = self.stacks.get_mut(&instruction.dest).unwrap();
+        for _ in 0..moved_crates.len() {
+            let item = moved_crates.pop().unwrap();
+            to_stack.push(item);
+        }
+    }
 }
 
 impl Puzzle {
     fn execute_instructions(&mut self) {
         for instruction in &self.instructions {
             self.stacks.move_crates(&instruction);
+        }
+    }
+
+    fn execute_instructions_multi(&mut self) {
+        for instruction in &self.instructions {
+            self.stacks.move_crates_together(&instruction);
         }
     }
 
@@ -100,9 +121,9 @@ impl Solution for Day05 {
         input.top_crates()
     }
 
-    fn part_two(_input: &mut Self::ParsedInput) -> String {
-        // TODO: implement part two
-        0.to_string()
+    fn part_two(input: &mut Self::ParsedInput) -> String {
+        input.execute_instructions_multi();
+        input.top_crates()
     }
 }
 

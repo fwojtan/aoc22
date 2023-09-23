@@ -19,6 +19,13 @@ impl Pair {
         (self.a.upper <= self.b.upper && self.a.lower >= self.b.lower)
             || (self.b.upper <= self.a.upper && self.b.lower >= self.a.lower)
     }
+
+    fn ranges_overlap(&self) -> bool {
+        (self.a.upper <= self.b.upper && self.a.upper >= self.b.lower)
+            || (self.a.lower <= self.b.upper && self.a.lower >= self.b.lower)
+            || (self.a.lower < self.b.lower && self.a.upper > self.b.upper)
+            || (self.a.lower > self.b.lower && self.a.upper < self.b.upper)
+    }
 }
 
 impl Solution for Day04 {
@@ -59,9 +66,14 @@ impl Solution for Day04 {
         count.to_string()
     }
 
-    fn part_two(_input: &mut Self::ParsedInput) -> String {
-        // TODO: implement part two
-        0.to_string()
+    fn part_two(input: &mut Self::ParsedInput) -> String {
+        let mut count = 0;
+        for pair in input {
+            if pair.ranges_overlap() {
+                count += 1;
+            }
+        }
+        count.to_string()
     }
 }
 
@@ -81,6 +93,15 @@ mod tests {
 
     #[test]
     fn check_day04_both_case1() {
-        assert_eq!(Day04::solve("", false), ("0".to_string(), "0".to_string()))
+        let input = r"2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8";
+        assert_eq!(
+            Day04::solve(input, false),
+            ("2".to_string(), "4".to_string())
+        )
     }
 }

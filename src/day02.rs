@@ -17,9 +17,8 @@ impl Solution for Day02 {
         input.lines().map(score_round).sum::<u32>().to_string()
     }
 
-    fn part_two(_input: &mut Self::ParsedInput) -> String {
-        // TODO: implement part two
-        0.to_string()
+    fn part_two(input: &mut Self::ParsedInput) -> String {
+        input.lines().map(score_by_outcome).sum::<u32>().to_string()
     }
 }
 
@@ -34,6 +33,25 @@ fn score_round(round: &str) -> u32 {
         "A Z" => 3, // 3 + 0
         "B Z" => 9, // 3 + 6
         "C Z" => 6, // 3 + 3
+        _ => 0,
+    }
+}
+
+// A beats C
+// C beats B
+// B beats A
+
+fn score_by_outcome(round: &str) -> u32 {
+    match round {
+        "A X" => 3, // lose -> C -> 0 + 3
+        "B X" => 1, // lose -> A -> 0 + 1
+        "C X" => 2, // lose -> B -> 0 + 2
+        "A Y" => 4, // draw -> A -> 3 + 1
+        "B Y" => 5, // draw -> B -> 3 + 2
+        "C Y" => 6, // draw -> C -> 3 + 3
+        "A Z" => 8, // win  -> B -> 6 + 2
+        "B Z" => 9, // win  -> C -> 6 + 3
+        "C Z" => 7, // win  -> A -> 6 + 1
         _ => 0,
     }
 }

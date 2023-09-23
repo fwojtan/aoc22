@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use crate::Solution;
 
 #[derive(Clone, Debug)]
@@ -13,15 +15,33 @@ impl Solution for Day06 {
         input_lines.to_string()
     }
 
-    fn part_one(_input: &mut Self::ParsedInput) -> String {
-        // TODO: implement part one
-        0.to_string()
+    fn part_one(input: &mut Self::ParsedInput) -> String {
+        find_unique(4, input)
     }
 
-    fn part_two(_input: &mut Self::ParsedInput) -> String {
-        // TODO: implement part two
-        0.to_string()
+    fn part_two(input: &mut Self::ParsedInput) -> String {
+        find_unique(14, input)
     }
+}
+
+fn find_unique(num: usize, input: &mut String) -> String {
+    let mut set = HashSet::new();
+    (num + input
+        .as_bytes()
+        .windows(num)
+        .position(|w| {
+            let mut dupe = false;
+            for i in w {
+                if set.contains(i) {
+                    dupe = true;
+                }
+                set.insert(i);
+            }
+            set.clear();
+            !dupe
+        })
+        .unwrap())
+    .to_string()
 }
 
 #[cfg(test)]

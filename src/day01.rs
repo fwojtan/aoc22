@@ -33,9 +33,22 @@ impl Solution for Day01 {
             .to_string()
     }
 
-    fn part_two(_input: &mut Self::ParsedInput) -> String {
-        // TODO: implement part two
-        0.to_string()
+    fn part_two(input: &mut Self::ParsedInput) -> String {
+        let mut results = vec![0, 0, 0];
+        let elves = input
+            .iter()
+            .map(|elf| elf.iter().sum::<u32>())
+            .collect::<Vec<u32>>();
+        for elf in elves {
+            if elf > results[0] {
+                println!("{} is bigger than {}", elf, results[0]);
+                results.remove(0);
+                results.push(elf);
+                results.sort();
+                println!("Results: {:?}", results);
+            }
+        }
+        results.iter().sum::<u32>().to_string()
     }
 }
 
