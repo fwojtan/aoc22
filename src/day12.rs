@@ -19,7 +19,6 @@ impl Location {
 
 pub struct WorldMap {
     world_graph: Graph<Location, u8>,
-    world_grid: Vec<Vec<(Location, NodeIndex)>>,
     start_idx: NodeIndex,
     end_idx: NodeIndex,
 }
@@ -86,7 +85,6 @@ impl Solution for Day12 {
         }
         WorldMap {
             world_graph,
-            world_grid,
             start_idx: start_idx.unwrap(),
             end_idx: end_idx.unwrap(),
         }
@@ -104,21 +102,15 @@ impl Solution for Day12 {
     }
 
     fn part_two(input: &mut Self::ParsedInput) -> String {
-        let mut paths = vec![];
-        for loc in input.world_grid.iter().flatten() {
-            if loc.0.height == 'a'.try_into().unwrap() {
-                let shortest_path = dijkstra(
-                    &input.world_graph,
-                    loc.1,
-                    Some(input.end_idx.clone()),
-                    |_e| 1,
-                );
-                if let Some(shortest) = shortest_path.get(&input.end_idx) {
-                    paths.push(shortest.clone());
-                }
+        input.world_graph.reverse();
+        let shortest_paths = dijkstra(&input.world_graph, input.end_idx, None, |_e| 1);
+        let mut shortest_path = i32::MAX;
+        for (path_idx, distance) in shortest_paths {
+            if input.world_graph[path_idx].height == 'a'.try_into().unwrap() {
+                shortest_path = shortest_path.min(distance);
             }
         }
-        paths.iter().min().unwrap().to_string()
+        shortest_path.to_string()
     }
 }
 
